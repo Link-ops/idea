@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fh.dao.ArticleDao">
+    <select id="selectAllArticle" resultType="com.fh.entity.Article">
+        select
+        id,title,status,content,author,create_time as createTime
+        from cmfz_article
+    </select>
+    <insert id="insertArticle">
+        insert into cmfz_article(id,title,status,content,author,create_time)values (
+          #{id,jdbcType=VARCHAR},#{title,jdbcType=VARCHAR},
+          #{status,jdbcType=VARCHAR},#{content,jdbcType=VARCHAR},
+          #{author,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+    <update id="updateArticle">
+        update cmfz_article set title=#{title,jdbcType=VARCHAR},
+        status=#{status,jdbcType=VARCHAR},content=#{content,jdbcType=VARCHAR},
+        author=#{author,jdbcType=VARCHAR}
+        where id=#{id}
+    </update>
+</mapper>

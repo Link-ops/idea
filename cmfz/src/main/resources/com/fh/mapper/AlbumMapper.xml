@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fh.dao.AlbumDao">
+   <select id="selectAllAlbum" resultType="com.fh.entity.Album">
+       select
+       id,title,score,author,announcer,chapter_number as chapterNumber,
+       synopsis,state,create_time as createTime,upload_time as uploadTime,img
+       from cmfz_album
+   </select>
+    <insert id="insertAlbum">
+        insert into cmfz_album(
+        id,title,score,author,announcer,chapter_number,
+        synopsis,state,create_time,upload_time,img
+        )
+        values (
+        #{id,jdbcType=VARCHAR},#{title,jdbcType=VARCHAR},#{score,jdbcType=VARCHAR},#{author,jdbcType=VARCHAR},
+        #{announcer,jdbcType=VARCHAR},#{chapterNumber,jdbcType=VARCHAR},#{synopsis,jdbcType=VARCHAR},
+        #{state,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{uploadTime,jdbcType=TIMESTAMP},
+        #{img,jdbcType=VARCHAR}
+        )
+    </insert>
+    <delete id="deleteAlbum">
+        delete from cmfz_album where id in
+        <foreach open="(" separator="," close=")" item="id" collection="array">
+            #{id}
+        </foreach>
+    </delete>
+    <update id="updateAlbum">
+        update cmfz_album set
+        title=#{title,jdbcType=VARCHAR},score=#{score,jdbcType=VARCHAR},
+        author=#{author,jdbcType=VARCHAR},announcer=#{announcer,jdbcType=VARCHAR},
+        chapter_number=#{chapterNumber,jdbcType=VARCHAR},synopsis=#{synopsis,jdbcType=VARCHAR},
+        state=#{state,jdbcType=VARCHAR},img=#{img,jdbcType=VARCHAR}
+        where id=#{id}
+    </update>
+    <update id="updateAlbumImg">
+        update cmfz_album set img=#{img,jdbcType=VARCHAR}
+        where id=#{id}
+    </update>
+    <select id="selectOneAlbum" resultType="com.fh.entity.Album">
+       select
+       id,title,score,author,announcer,chapter_number as chapterNumber,
+       synopsis,state,create_time as createTime,upload_time as uploadTime,img
+       from cmfz_album where id=#{id}
+   </select>
+    <select id="selectAllChapterOnAlbum" resultType="com.fh.entity.Chapter">
+        select id,title,time,upload_time as uploadTime,size,music,album_id as albumId
+        from cmfz_chapter
+        where album_id=#{id}
+    </select>
+</mapper>

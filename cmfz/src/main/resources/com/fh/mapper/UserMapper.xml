@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fh.dao.UserDao">
+    <select id="selectUserCountByProvince" resultType="com.fh.entity.AddressNumber">
+        select province name ,count(id) value from cmfz_user where sex=#{sex,jdbcType=VARCHAR}
+    </select>
+    <select id="selectUserCountByTime" resultType="java.lang.Integer">
+       select count(id) from cmfz_user where datediff(now(),create_date) &lt;#{time}
+    </select>
+    <insert id="addUser">
+        insert into cmfz_user(id,name,province,create_date,sex,nick_name,
+        photo,location,city,description,phone,password)
+        values (
+        #{id},#{name,jdbcType=VARCHAR},#{province,jdbcType=VARCHAR},#{createTime},#{sex,jdbcType=VARCHAR},
+        #{nickName,jdbcType=VARCHAR},#{photo,jdbcType=VARCHAR},#{location,jdbcType=VARCHAR},#{city,jdbcType=VARCHAR},
+        #{description,jdbcType=VARCHAR},#{phone},#{password}
+        )
+    </insert>
+    <select id="loginUser" resultType="com.fh.entity.User">
+        select
+        id,name,province,create_date as createTime,sex,nick_name as nickName,
+        photo,location,city,description,phone,password
+        from cmfz_user where phone=#{phone} and password=#{password}
+    </select>
+    <select id="selectOneUser" resultType="com.fh.entity.User">
+        select
+        id,name,province,create_date as createTime,sex,nick_name as nickName,
+        photo,location,city,description,phone,password
+        from cmfz_user where phone=#{phone}
+    </select>
+    <select id="selectAllUser" resultType="com.fh.entity.User">
+        select
+        id,name,province,create_date as createTime,sex,nick_name as nickName,
+        photo,location,city,description,phone,password
+        from cmfz_user where id in
+        <foreach open="(" separator="," close=")" item="id" collection="array">
+            #{id}
+        </foreach>
+    </select>
+</mapper>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fh.dao.BannerDao">
+    <select id="selectAllBanner" resultType="com.fh.entity.Banner">
+        select id,title,description,time,state,img
+        from cmfz_banner
+    </select>
+    <select id="selectOneBanner" resultType="com.fh.entity.Banner">
+        select id,title,description,time,state,img
+        from cmfz_banner
+    </select>
+    <delete id="deleteOneBanner">
+        delete from cmfz_banner where id=#{id}
+    </delete>
+    <update id="updateBanner">
+        update cmfz_banner set
+        title=#{title,jdbcType=VARCHAR},description=#{description,jdbcType=VARCHAR},
+        state=#{state,jdbcType=VARCHAR}
+        where id=#{id}
+    </update>
+    <insert id="insertBanner">
+        insert into cmfz_banner(
+          id,title,description,time,state,img
+        ) values (
+          #{id,jdbcType=VARCHAR},#{title,jdbcType=VARCHAR},
+          #{description,jdbcType=VARCHAR},#{time,jdbcType=TIMESTAMP},
+          #{state,jdbcType=VARCHAR},#{img,jdbcType=VARCHAR}
+        )
+    </insert>
+    <update id="updateBannerImg">
+        update cmfz_banner set
+        img=#{img,jdbcType=VARCHAR}
+        where id=#{id}
+    </update>
+    <delete id="deleteSomeBanner" parameterType="String">
+        delete from cmfz_banner
+        where id in
+        <foreach open="(" separator="," close=")" item="id" collection="array">#{id}</foreach>
+    </delete>
+</mapper>
